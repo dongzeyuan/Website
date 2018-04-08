@@ -2,13 +2,13 @@
 
 from flask import Flask, render_template
 from flask.ext.script import Manager
+from flask.ext.bootstrap import Bootstrap
 import config
-
-
 
 app = Flask(__name__)
 app.config.from_object(config)
 manager = Manager(app)
+bootstrap = Bootstrap(app)
 
 
 @app.route('/')
