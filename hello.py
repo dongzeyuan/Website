@@ -1,13 +1,13 @@
 # encoding:utf-8
 
 from flask import Flask, render_template
-from flask.ext.script import Manager
+
 from flask.ext.bootstrap import Bootstrap
 import config
 
 app = Flask(__name__)
 app.config.from_object(config)
-manager = Manager(app)
+
 bootstrap = Bootstrap(app)
 
 
@@ -22,4 +22,4 @@ def user(name):
 
 
 if __name__ == '__main__':
-    manager.run()
+    app.run()
