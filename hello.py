@@ -3,12 +3,8 @@
 from flask import Flask, render_template
 
 from flask_bootstrap import Bootstrap
-import config
 
 app = Flask(__name__)
-app.config.from_object(config)
-
-bootstrap = Bootstrap(app)
 
 
 @app.route('/')
