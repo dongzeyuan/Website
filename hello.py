@@ -1,21 +1,26 @@
 # encoding:utf-8
 
-from flask import Flask, render_template
-
-from flask_bootstrap import Bootstrap
-
+from flask import Flask
+from flask import redirect
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # 重定向
+    return redirect('https://www.baidu.com')
+
+@app.route('/projects/')
+def projects():
+    return "projects page"
+
+@app.route('/about')
+def about():
+    return "about page"
 
 
-@app.route('/user/<name>')
-def user(name):
-    return render_template('user.html', name=name)
+
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
