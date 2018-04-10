@@ -1,14 +1,13 @@
 # encoding:utf-8
 
 from flask import Flask
-from flask import redirect
+
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    # 重定向
-    return redirect('https://www.baidu.com')
+    return "index"
 
 @app.route('/projects/')
 def projects():
