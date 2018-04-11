@@ -1,27 +1,15 @@
 # encoding:utf-8
 
 from flask import Flask, render_template
-from flask.ext.wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import Required
-from flask.ext.bootstrap import Bootstrap
+
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
-app.config['SECRET_KEY'] = 'hard to guess string'
 
-class NameForm(FlaskForm):
-    name = StringField('What is your name', validators=[Required()])
-    submit = SubmitField('Submit')
 
-@app.route('/',methods=['GET','POST'])
+@app.route('/')
 def index():
-    name = None
-    form = NameForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-    return render_template('index.html', form=form,name=name)
+    comments = ['你', '是', '大', '坏', '蛋']
+    return render_template('index.html', comments=comments)
 
 
 if __name__ == '__main__':
