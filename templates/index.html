@@ -1,5 +1,9 @@
-<ul>
-  {% for comment in comments %}
-  <li>{{ comment }}</li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello World!</h1>
+</div>
+{% endblock %}
