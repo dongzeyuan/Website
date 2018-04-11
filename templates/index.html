@@ -1,11 +1,12 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{{ wtf.quick_form(form) }}
 
-<video width="320" height="240" controls="controls">
-  <source src="http://www.w3school.com.cn/i/movie.ogg" type="video/ogg">
-  <source src="http://www.w3school.com.cn/i/movie.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+{% block title %}Flasky{% endblock %}
 
-</body>
-</html>
+{% block page_content %}
+<div class="page-header">
+  <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
+</div>
+{{ wtf.quick_form(form) }}
+{% endblock %}
