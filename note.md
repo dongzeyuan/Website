@@ -9,3 +9,4 @@
     cd python-env
     python -m venv flask-env
 2. 在vs code中使用虚拟环境
+3. 机械硬盘眼看要挂，直接换了ubuntu，现在在升级
