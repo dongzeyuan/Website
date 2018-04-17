@@ -142,7 +142,56 @@ class User(db.Model):
 
 ### 关系
 
-试验一下ssh是不是成功了,再试试
+关系型数据库使用关系把不同`表`中的`行`联系起来。例如上面的Role模型和User模型，一个role（角色）可以对应多个user（用户），但是一个user只能有一个role。
+
+这种一对多关系，在模型类中的表示方法如下：
+```python
+class Role(db.Model):
+    # ...
+
+    # 这里用db.relationship方法构建关系,
+    # 其实是在User类中新增了 role 列属性
+    users = db.relationship('User',backref='role')
+
+class User(db.Model):
+    # ...
+
+    # 下面实际上是在User类中创建了role的新列
+    # 在User的新列里添加了新列 role_id,并定义其为外键
+    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+```
+
+在一对多关系中，只能对应一个的那个类使用添加列的方式增加列属性；能对应多个的那个类使用db.relationship添加关系
+
+### 在python shell里进行数据库操作
+
+1. 创建表
+
+    使用db.creat_all()函数创建数据库
+
+```python
+(venv) python shell
+
+>>>from hello import db
+>>>db.creat_all()
+```
+如果数据库的表（hello.py文件中定义的两个表）已经存在于数据库中，那么db.creat_all()不会重新创建或者更新这两个表的。
+
+2. 插入行
+
+```python
+>>>from hello import Role, User
+>>>admin_role = Role(name='Admin')
+>>>mod_role = Role(name='Moderator')
+>>>user_role = Role(name='User')
+>>>user_john = User(username='john',role=admin_role)
+>>>user_susan = User(username='susan',role=user_role)
+>>>user_david = User(username='david',role=user_role)
+```
+
+3. 修改行
+4. 删除行
+5. 查询行
 
 
 
