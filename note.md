@@ -188,12 +188,41 @@ class User(db.Model):
 >>>user_susan = User(username='susan',role=user_role)
 >>>user_david = User(username='david',role=user_role)
 ```
+上面其实并没有将数据写入库中，在写入数据库前，先将其添加到对话中
+
+```python
+>>>db.session.add(admin_role)
+或者
+>>>db.session.add_all([admin_role,mod_role,user_role,user_john,user_susan,user_david])
+```
+最后使用commit()方法提交会话
+
+```python
+>>>db.session.commit()
+```
+可以看出，在pythonshell中添加数据比较麻烦，
+
+创建-----添加到会话中（db.session.add 或者db.session.add_all)------db.session.commit()
+
 
 3. 修改行
+```
+db.session.add()
+```
 4. 删除行
+```
+db.session.delete()
+```
 5. 查询行
+```
+Role.query.all()
+User.query.filter_by(role=user_role).all()
+```
+`filter_by()` 是查询过滤器，还有不同的查询过滤器，这里不在叙述
 
+`all()`是查询执行函数
 
+### 在视图函数中操作数据库
 
 
 
