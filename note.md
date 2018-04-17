@@ -142,6 +142,8 @@ class User(db.Model):
 
 ### 关系
 
+试验一下ssh是不是成功了
+
 
 
 
