@@ -1,13 +1,14 @@
 import os
 from datetime import datetime
 from flask import Flask, render_template, session, redirect, url_for, flash
-from flask_script import Manager
+from flask_script import Manager, Shell
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate,MigrateCommand
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -19,12 +20,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] =\
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+def make_shell_context():
+    return dict(app=app, db=db, User=User, Role=Role)
+
 
 manager = Manager(app)
+manager.add_command("shell", Shell(make_context=make_shell_context))
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -49,6 +55,9 @@ class User(db.Model):
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[Required()])
     submit = SubmitField('Submit')
+
+
+
 
 
 @app.errorhandler(404)
