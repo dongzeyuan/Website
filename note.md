@@ -224,6 +224,69 @@ User.query.filter_by(role=user_role).all()
 
 ### 在视图函数中操作数据库
 
+```python
+@app.route('/',methods=['GET','POST'])
+def index():
+
+    # 生成表单类实例
+    form = NameForm()
+
+    # validate_on_submit()函数用于验证表单是否收到用户的输入
+    # 如果用户输入有效值，该方法返回True，否则返回False
+    if form.validate_on_submit():
+
+        # 使用query对象的filter_by()过滤器查询输入的表单值是否在数据库内，如果在数据库内，user不为None，否则返回None
+        user = User.query.filter_by(username=form.name.data).first()
+
+        # 如果输入的表单值不在数据库内
+        if user is None:
+
+            # 将输入的表单值赋值给User类的username列，然后将名字赋值给user变量
+            user = User(username = form.name.data)
+
+            # 数据库会话中增加 user（表单输入值）
+            db.session.add(user)
+
+            # 请求上下文中的known变量设定为Fasle（这个人在数据库中没有）
+            session['known'] = False
+
+        # 如果输入的表单值在数据库内
+        else:
+
+            # 请求上下文的known变量设定为True（这个人在数据库中）
+            session['known'] = True
+
+        # 将输入的表单值赋值给请求上下文的 name 变量
+        session['name'] = form.name.data
+
+        # 将输入的表单值设定为空
+        form.name.data = ''
+
+        # 重定向，返回inex视图函数的url
+        return redirect(url_for('index'))
+
+    # 返回渲染模板中的index.html文件，同时给模板中的占位变量赋值
+    return render_template('index.html',form = form,
+                            name = session.get('name'),
+                            known = session.get('known',False))
+```
+
+对应的模板
+
+```html
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello, {% if name %} {{ name }}{% else %}Stranger{% endif %}!</h1>
+    <!-- 下面是模板中根据程序中的known取值不同显示不同的欢迎信息-->
+    {% if not known %}
+    <p>Pleased to meet you!</p>
+    {% if known %}
+    <p>Happy to see you again</p>
+    {% endif %}
+</div>
+```
+
+在这个视图函数中，提交表单后，程序使用filter_by()过滤器在数据库中查询提交的名字。变量known被写入用户会话中，因此在重定向后可以把数据传给模板，用来显示自定义的欢迎信息。
 
 
 
