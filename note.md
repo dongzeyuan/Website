@@ -1,3 +1,5 @@
+[toc]
+
 # 疑难杂症
 
 ## github 不显示 contribution
@@ -288,5 +290,54 @@ def index():
 
 在这个视图函数中，提交表单后，程序使用filter_by()过滤器在数据库中查询提交的名字。变量known被写入用户会话中，因此在重定向后可以把数据传给模板，用来显示自定义的欢迎信息。
 
+## 大型项目的构架
+
+### 项目结构
+Flask程序的基本结构如下：
 
 
+```
+Project:
+|   config.py
+|   manage.py
+|   requirements.txt
+|
++---app
+|   |   email.py
+|   |   models.py
+|   |   __init__.py
+|   |
+|   +---main
+|   |       errors.py
+|   |       forms.py
+|   |       views.py
+|   |       __init__.py
+|   |
+|   +---static
+|   \---templates
++---migrations
++---tests
+|       test.py
+|       __init__.py
+|
+\---venv
+```
+
+```
+上面那个文件夹结构，使用tree命令生成
+tree 生成当前目录的结构图，默认只输出文件夹
+tree /f 生成当前目录结构图，包括文件夹内文件
+tree /a 换另一种样式
+上面的结构命令是： tree /f /a
+```
+共计4个顶级文件夹：
+* app 包中存放Flask程序
+* migrations 存放数据库迁移文件
+* test 存放单元测试脚本
+* venv 包含python虚拟环境
+
+同时还创建了一些文件
+
+* requirements.txt 列出了所有的依赖包，便于在其他文件中重新生成相同的虚拟环境
+* config.py 存储配置文件
+* manage.py 用于启动程序以及其他的程序任务
