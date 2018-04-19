@@ -341,3 +341,67 @@ tree /a 换另一种样式
 * requirements.txt 列出了所有的依赖包，便于在其他文件中重新生成相同的虚拟环境
 * config.py 存储配置文件
 * manage.py 用于启动程序以及其他的程序任务
+
+### 我对项目构架的理解
+
+1. 首先app文件夹中的`./app/__init__.py`文件引入程序的库，生成工厂函数。所谓的工厂函数，就是定义一个外部函数，这个函数简单的生成并返回一个内嵌的函数，仅仅是返回但是不调用，通过调用这个工厂函数，可以得到内嵌函数的一个引用，内嵌函数就是通过调用工厂函数时运行内部的def语句而创建的。例如：
+
+```python
+# 工厂函数 maker
+def maker(n):
+    k = 8
+
+    # 内嵌函数 action
+    def action(x):
+        return x**n+k
+    return action
+```
+
+在flask中，具体的工厂函数例子如：
+
+```python
+def create_app(config_name):
+
+    #生成Flask实例，app
+    app = Flask(__name__)
+    # 通过flask的config.from_object()方法引入外部配置
+    # 这里一定要注意，传递的参数时config文件中的config字典中的key
+    # 所以携程config[config_name]的形式
+    app.config.from_object(config[config_name])
+
+    # config包中的config字典中对应的开发环境基类中的.init_app()方法
+    # 这个地方比较绕
+    # config文件中定义了class Config，内含一个.init_app()的静态方法
+    # config文件中其他所有的类都继承自Config类，所以也都继承了.init_app()方法
+    config[config_name].init_app(app)
+
+    bootstrap.init_app(app)
+    mail.init_app(app)
+    moment.init_app(app)
+    db.init_app(app)
+
+    # 返回app实例
+    return app
+
+```
+
+2. 项目文件夹 `./config` 配置程序，建立了基本的配置，生成了几种工作环境的设置：
+    * developmentconfig
+    * testingconfig
+    * productionconfig
+    * defaultconfig（默认设置为开发环境）
+3. 程序的蓝本，在`./app/main/__init__.py`文件中创建蓝本，蓝本程序形如：
+```python
+from flask import Blueprint
+
+# 生成蓝本实例
+# 蓝本程序一般接受两个参数，一个是蓝本的名字，
+# 第二个是蓝本所在的包或模块
+main = Blueprint('main',__name__)
+
+# 这里的两个模块需要在 __init__.py脚本的末尾导入，
+# 这是为了避免循环导入依赖，在views和errors中还要导入蓝本main
+from . import views, errors
+```
+
+
