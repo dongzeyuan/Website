@@ -26,7 +26,7 @@ class User(db.Model):
     def password(self):
         raise AttributeError('password is not a readable attribute')
     # 定义生成密码的函数
-    @password_hash
+    @password.setter
     def password(self, password):
         self.password_hash = generate_password_hash(password)
     # 定义验证密码的函数

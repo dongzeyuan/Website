@@ -395,7 +395,7 @@ def create_app(config_name):
 from flask import Blueprint
 
 # 生成蓝本实例
-# 蓝本程序一般接受两个参数，一个是蓝本的名字，
+# 蓝本程序一般接受两个参数，第一个是蓝本的名字，
 # 第二个是蓝本所在的包或模块
 main = Blueprint('main',__name__)
 
@@ -403,5 +403,5 @@ main = Blueprint('main',__name__)
 # 这是为了避免循环导入依赖，在views和errors中还要导入蓝本main
 from . import views, errors
 ```
-
+在__init__.py
 
