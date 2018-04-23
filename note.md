@@ -297,30 +297,58 @@ Flask程序的基本结构如下：
 
 
 ```
-Project:
-|   config.py
-|   manage.py
-|   requirements.txt
+D:.
+|   config.py                           生成配置文件
+|   data-dev.sqlite                     项目数据库文件
+|   manage.py                           项目启动文件
+|   note.md 
+|   requirements.txt                    项目运行环境描述
++---app                                 /程序包文件夹
+|   |   email.py                        邮件脚本
+|   |   models.py                       数据模型
+|   |   __init__.py                     工厂函数&注册蓝本
+|   |
+|   +---auth                            /用户认证模块
+|   |   |   forms.py                    用户认证表单文件
+|   |   |   views.py                    用户认证视图函数
+|   |   |   __init__.py                 用户认证蓝图
+|   |   |
+|   |
+|   +---main                            /主程序
+|   |   |   errors.py                   错误信息
+|   |   |   forms.py                    主程序表单文件
+|   |   |   views.py                    主程序视图函数
+|   |   |   __init__.py                 主程序蓝图
+|   |   |
+|   |
+|   +---static                          /app下的静态文件包
+|   |       favicon.ico                 网站缩略图标
+|   |
+|   +---templates                       /模板文件
+|   |   |   404.html                    
+|   |   |   500.html
+|   |   |   base.html
+|   |   |   index.html
+|   |   |   user.html
+|   |   |
+|   |   \---auth                        /用户认证模块的模板文件
+|   |           login.html
+|   |           register.html
+|   |
 |
-+---app
-|   |   email.py
-|   |   models.py
-|   |   __init__.py
-|   |
-|   +---main
-|   |       errors.py
-|   |       forms.py
-|   |       views.py
-|   |       __init__.py
-|   |
-|   +---static
-|   \---templates
 +---migrations
+|   |   alembic.ini
+|   |   env.py
+|   |   README
+|   |   script.py.mako
+|   |
+|   +---versions
+|
 +---tests
 |       test.py
+|       test_user_model.py
 |       __init__.py
 |
-\---venv
 ```
 
 ```
