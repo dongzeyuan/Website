@@ -1,7 +1,7 @@
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from . import db
 # 导入flask_login 模块的 Usermixin类，包含几种用户方法
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 
 # 导入werkzeug中的security模块，导入生成和检验hash值的函数
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -32,14 +32,14 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User':(Permission.FOLLOW |
-                    Permission.COMMENT |
-                    Permission.WRITE_ARTICLES, True),
-            'Moderator':(Permission.FOLLOW |
-                         Permission.COMMENT |
-                         Permission.WRITE_ARTICLES |
-                         Permission.MODERATE_COMMENTS, False),
-            'Administrator':(0xff, False)
+            'User': (Permission.FOLLOW |
+                     Permission.COMMENT |
+                     Permission.WRITE_ARTICLES, True),
+            'Moderator': (Permission.FOLLOW |
+                          Permission.COMMENT |
+                          Permission.WRITE_ARTICLES |
+                          Permission.MODERATE_COMMENTS, False),
+            'Administrator': (0xff, False)
         }
         for r in roles:
             role = Role.query.filter_by(name=r).first()
@@ -61,6 +61,14 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
 
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['FLASKY_ADMIN']:
+                self.role = Role.query.filter_by(permissions=0xff).first()
+            if self.role is None:
+                self.role = Role.query.filter_by(default=True).first()
+
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
@@ -76,6 +84,13 @@ class User(UserMixin, db.Model):
         self.confirmed = True
         db.session.add(self)
         return True
+
+    def can(self, permissions):
+        return self.role is not None and \
+            (self.role.permissions & permissions) == permissions
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
 
     @property
     def password(self):
@@ -93,6 +108,15 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissons):
+        return False
+    
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
