@@ -23,6 +23,10 @@ login_manager.session_protection = 'stron'
 login_manager.login_view = 'auth.login'
 
 
+@main.app_context_processor
+def inject_permissions():
+    return dict(Permission=Permission)
+
 # 所谓的工厂函数，接受一个参数，是程序使用的配置名
 def create_app(config_name):
     app = Flask(__name__)
