@@ -11,7 +11,9 @@ from .. import db
 from ..models import User
 
 # 蓝图中定义的程序路由
-@main.route('/', methods=['GET','POST'])
+
+
+@main.route('/', methods=['GET', 'POST'])
 def index():
     # 实例化表单类,记得实例化时类名加括号
     # 写成 form = NameForm下面会报错
@@ -32,7 +34,7 @@ def index():
             if current_app.config['FLASKY_ADMIN']:
                 send_email(app.config['FLASKY_ADMIN'], 'New User',
                            'mail/new_user', user=user)
-        # 如果用户名在数据库中    
+        # 如果用户名在数据库中
         else:
             # 程序上下文中known值设定为真
             session['known'] = True
@@ -45,4 +47,12 @@ def index():
     # 返回模板，给模板中的占位符赋值
     return render_template('index.html', form=form, name=session.get('name'),
                            known=session.get('known', False),
-                           current_time = datetime.utcnow())
+                           current_time=datetime.utcnow())
+
+
+@main.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+    return render_template('user.html', user=user)
