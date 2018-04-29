@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, redirect, url_for, flash
 from flask_login import login_user, login_required, current_user, logout_user
 
 # 导入蓝图函数
@@ -73,4 +73,4 @@ def edit_profile():
     form.name.data = current_user.name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
-    return render_template('edit-profile.html', form=form)
+    return render_template('edit_profile.html', form=form)
