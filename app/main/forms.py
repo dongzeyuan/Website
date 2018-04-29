@@ -5,7 +5,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import Required
+from wtforms.validators import Required,Length
 
 # 定义NameForm表单类，基于FlaskForm类生成
 class NameForm(FlaskForm):
