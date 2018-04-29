@@ -4,7 +4,7 @@
 '''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import Required
 
 # 定义NameForm表单类，基于FlaskForm类生成
@@ -14,3 +14,9 @@ class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[Required()])
     # 添加一个表单提交按钮，按钮名字为Submit
     submit = SubmitField('Submit')
+
+class EditProfileForm(FlaskForm):
+    name = StringField('Real name', validators=[Length(0,64)])
+    location = StringField('Location', validators=[Length(0,64)])
+    about_me = TextAreaField('About me')
+    sumbit = SubmitField('Submit')
