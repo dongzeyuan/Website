@@ -1,5 +1,3 @@
-[toc]
-
 # 疑难杂症
 
 ## github 不显示 contribution
@@ -11,6 +9,18 @@
 
 ```bash
 git config --global "xxxxx@xx.com"
+```
+
+## 创建数据库迁移脚本
+```shell
+cd 至项目根目录（manage.py所在那一层目录）
+
+# 其中migrate tag是指自定义的标记，类似git的commit内容
+# 这样就生成了迁移脚本
+(venv) $ python manage.py db migrate -m "migrate tag"
+
+# 执行升级脚本upgrade命令，升级到最新数据库
+(venv) $ python manage.py db upgrade
 ```
 
 
@@ -434,4 +444,4 @@ from . import views, errors
 在__init__.py
 今天太忙了，水一发
 
-[toc]
+
