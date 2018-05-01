@@ -5,7 +5,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 
 # 导入werkzeug中的security模块，导入生成和检验hash值的函数
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import current_app, requestF
+from flask import current_app, request
 from datetime import datetime
 
 from . import login_manager
@@ -128,7 +128,7 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
     # 定义验证密码的函数
 
-     def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
