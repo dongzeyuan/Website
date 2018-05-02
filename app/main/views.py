@@ -7,18 +7,18 @@ from ..decorators import admin_required
 # 导入蓝图函数
 from . import main
 # 从表单定义文件中引入表单类
-from .forms import NameForm, EditProfileForm
+from .forms import NameForm, EditProfileForm, PostForm
 # 从./app/__init__.py中引入db
 from .. import db
 # 从模型类引入User模型
-from ..models import User, Role
+from ..models import User, Role, Permission, Post
 
 # 蓝图中定义的程序路由
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    # 实例化表单类,记得实例化时类名加括号
+    ''' # 实例化表单类,记得实例化时类名加括号
     # 写成 form = NameForm下面会报错
     form = NameForm()
     # 表单有数据提交:
@@ -50,7 +50,17 @@ def index():
     # 返回模板，给模板中的占位符赋值
     return render_template('index.html', form=form, name=session.get('name'),
                            known=session.get('known', False),
-                           current_time=datetime.utcnow())
+                           current_time=datetime.utcnow())'''
+
+    form = PostForm()
+    if current_user.can(Permission.WRITE_ARTICLES) and \
+            form.validate_on_submit():
+        post = Post(body=form.body.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        return redirect(url_for('.index'))
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', form=form, posts=posts)
 
 
 @main.route('/user/<username>')
