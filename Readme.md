@@ -23,6 +23,11 @@ cd 至项目根目录（manage.py所在那一层目录）
 (venv) $ python manage.py db upgrade
 ```
 
+## VSCode快捷键
+```
+折叠代码：CTRL+K   CTRL+0
+展开代码：CTRL+K   CTRL+J
+```
 
 # Flask 笔记
 ## 安装Flask虚拟环境
