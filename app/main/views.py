@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, session, redirect, url_for, flash, request
+from flask import render_template, session, redirect, url_for, flash, request, current_app
 from flask_login import login_user, login_required, current_user, logout_user
 from ..decorators import admin_required
 
