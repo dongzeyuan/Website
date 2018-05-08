@@ -7,10 +7,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField
 from wtforms import ValidationError
 from wtforms.validators import Required, Length, Regexp, Email
+from flask_pagedown.fields import PageDownField
+
 
 # 定义NameForm表单类，基于FlaskForm类生成
-
-
 class NameForm(FlaskForm):
     # name是个文本字段，validators添加一个验证函数组成的列表，
     # Required验证函数确保字段中有数据
@@ -56,6 +56,7 @@ class EditProfileAdminForm(FlaskForm):
                 User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
 
+
 class PostForm(FlaskForm):
-    body = TextAreaField("What's on your mind?", validators=[Required()])
+    body = PageDownField("What's on your mind?", validators=[Required()])
     submit = SubmitField('Submit')
