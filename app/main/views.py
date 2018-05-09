@@ -7,7 +7,7 @@ from ..decorators import admin_required
 # 导入蓝图函数
 from . import main
 # 从表单定义文件中引入表单类
-from .forms import NameForm, EditProfileForm, PostForm
+from .forms import NameForm, EditProfileForm, EditProfileAdminForm, PostForm
 # 从./app/__init__.py中引入db
 from .. import db
 # 从模型类引入User模型
@@ -71,11 +71,14 @@ def index():
 
 @main.route('/user/<username>')
 def user(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        abort(404)
-    posts = user.posts.order_by(Post.timestamp.desc()).all()
-    return render_template('user.html', user=user, posts=posts)
+    user = User.query.filter_by(username=username).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    return render_template('user.html', user=user, posts=posts,
+                           pagination=pagination)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
@@ -102,7 +105,7 @@ def edit_profile_admin(id):
     user = User.query.get_or_404(id)
     form = EditProfileAdminForm(user=user)
     if form.validate_on_submit():
-        user.send_email = form.email.data
+        user.email = form.email.data
         user.username = form.username.data
         user.confirmed = form.confirmed.data
         user.role = Role.query.get(form.role.data)
@@ -113,9 +116,9 @@ def edit_profile_admin(id):
         flash('The profile has been updated.')
         return redirect(url_for('.user', username=user.username))
     form.email.data = user.email
-    form.email.data = user.send_email
     form.username.data = user.username
     form.confirmed.data = user.confirmed
+    form.role.data = user.role_id
     form.name.data = user.name
     form.location.data = user.location
     form.about_me.data = user.about_me
