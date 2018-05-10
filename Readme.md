@@ -1,3 +1,26 @@
+<!-- TOC -->
+
+- [疑难杂症](#)
+    - [github 不显示 contribution](#github--contribution)
+    - [创建数据库迁移脚本](#)
+    - [VSCode快捷键](#vscode)
+- [Flask 笔记](#flask)
+    - [安装Flask虚拟环境](#flask)
+        - [windows下](#windows)
+    - [flask程序的基本结构](#flask)
+        - [请求调度](#)
+    - [数据库](#)
+        - [Flask-SQLAlchemy](#flask-sqlalchemy)
+        - [定义模型](#)
+        - [关系](#)
+        - [在python shell里进行数据库操作](#python-shell)
+        - [在视图函数中操作数据库](#)
+    - [大型项目的构架](#)
+        - [项目结构](#)
+        - [我对项目构架的理解](#)
+
+<!-- /TOC -->
+
 # 疑难杂症
 
 ## github 不显示 contribution
