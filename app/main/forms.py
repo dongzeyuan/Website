@@ -4,10 +4,12 @@
 '''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField
+from wtforms import StringField, TextAreaField, BooleanField, SelectField,\
+    SubmitField
+from wtforms.validators import Required, Length, Email, Regexp
 from wtforms import ValidationError
-from wtforms.validators import Required, Length, Regexp, Email
 from flask_pagedown.fields import PageDownField
+from ..models import Role, User
 
 
 # 定义NameForm表单类，基于FlaskForm类生成
@@ -23,15 +25,15 @@ class EditProfileForm(FlaskForm):
     name = StringField('Real name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')
-    sumbit = SubmitField('Submit')
+    submit = SubmitField('Submit')
 
 
 class EditProfileAdminForm(FlaskForm):
-    email = StringField('Email', validators=[
-                        Required(), Length(1, 64), Email()])
-    username = StringField('Username0', validators=[
-        Required(), Length(1, 64), Regexp('^[A-Za-z0-9_.]*$', 0,
-                                          'Usernames must have only letters,'
+    email = StringField('Email', validators=[Required(), Length(1, 64),
+                                             Email()])
+    username = StringField('Username', validators=[
+        Required(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                                          'Usernames must have only letters, '
                                           'numbers, dots or underscores')])
     confirmed = BooleanField('Confirmed')
     role = SelectField('Role', coerce=int)
@@ -41,7 +43,7 @@ class EditProfileAdminForm(FlaskForm):
     submit = SubmitField('Submit')
 
     def __init__(self, user, *args, **kwargs):
-        super(EditProfileAdminForm, self).__init__(self, *args, **kwargs)
+        super(EditProfileAdminForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name)
                              for role in Role.query.order_by(Role.name).all()]
         self.user = user
