@@ -5,7 +5,8 @@ from .models import Permission
 
 def permission_required(permission):
     def decorator(f):
-        @wraps
+        # 这里，必须得写@wraps(f)，否则f函数信息会丢失，会报错
+        @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.can(permission):
                 abort(403)
