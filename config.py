@@ -20,6 +20,7 @@ class Config:
     FLASKY_MAIL_SENDER = 'Flasky Admin <13080129393@163.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN') or '332131800@qq.com'
     FLASKY_POSTS_PER_PAGE = 20
+    FLASKY_FOLLOWERS_PER_PAGE = 20
 
     # 定义静态方法
     @staticmethod
