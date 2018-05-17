@@ -87,10 +87,10 @@ class User(UserMixin, db.Model):
                                cascade='all, delete-orphan')
 
     followers = db.relationship('Follow',
-                               foreign_keys=[Follow.followed_id],
-                               backref=db.backref('followed', lazy='joined'),
-                               lazy='dynamic',
-                               cascade='all, delete-orphan')
+                                foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
 
     @staticmethod
     def generate_fake(count=100):
@@ -229,6 +229,11 @@ class User(UserMixin, db.Model):
     def is_followed_by(self, user):
         return self.followers.filter_by(
             follower_id=user.id).first() is not None
+
+    @property
+    def followed_posts(self):
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id) \
+            .filter(Follow.follower_id == self.id)
 
     def __repr__(self):
         return '<User %r>' % self.username
