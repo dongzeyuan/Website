@@ -62,3 +62,8 @@ class EditProfileAdminForm(FlaskForm):
 class PostForm(FlaskForm):
     body = PageDownField("What's on your mind?", validators=[Required()])
     submit = SubmitField('Submit')
+
+
+class COmmentForm(FlaskForm):
+    body = StringField('', validators=[Required()])
+    submit = SubmitField('Submit')
