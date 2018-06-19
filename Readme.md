@@ -484,3 +484,5 @@ from . import views, errors
 
 主播艺伎化
 
+这段时间荒废了很多，dota2太好玩了
+
