@@ -1,23 +1,23 @@
 <!-- TOC -->
 
-- [疑难杂症](#)
-    - [github 不显示 contribution](#github--contribution)
-    - [创建数据库迁移脚本](#)
-    - [VSCode快捷键](#vscode)
-- [Flask 笔记](#flask)
-    - [安装Flask虚拟环境](#flask)
-        - [windows下](#windows)
-    - [flask程序的基本结构](#flask)
-        - [请求调度](#)
-    - [数据库](#)
+- [疑难杂症](#疑难杂症)
+    - [github 不显示 contribution](#github-不显示-contribution)
+    - [创建数据库迁移脚本](#创建数据库迁移脚本)
+    - [VSCode快捷键](#vscode快捷键)
+- [Flask 笔记](#flask-笔记)
+    - [安装Flask虚拟环境](#安装flask虚拟环境)
+        - [windows下](#windows下)
+    - [flask程序的基本结构](#flask程序的基本结构)
+        - [请求调度](#请求调度)
+    - [数据库](#数据库)
         - [Flask-SQLAlchemy](#flask-sqlalchemy)
-        - [定义模型](#)
-        - [关系](#)
-        - [在python shell里进行数据库操作](#python-shell)
-        - [在视图函数中操作数据库](#)
-    - [大型项目的构架](#)
-        - [项目结构](#)
-        - [我对项目构架的理解](#)
+        - [定义模型](#定义模型)
+        - [关系](#关系)
+        - [在python shell里进行数据库操作](#在python-shell里进行数据库操作)
+        - [在视图函数中操作数据库](#在视图函数中操作数据库)
+    - [大型项目的构架](#大型项目的构架)
+        - [项目结构](#项目结构)
+        - [我对项目构架的理解](#我对项目构架的理解)
 
 <!-- /TOC -->
 
@@ -485,4 +485,6 @@ from . import views, errors
 主播艺伎化
 
 这段时间荒废了很多，dota2太好玩了
+
+今天买了新键盘，单位的事情也办的差不多了，是时候开启一波学习的浪潮了
 
