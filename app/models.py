@@ -235,7 +235,7 @@ class User(UserMixin, db.Model):
     def generate_auth_token(self, expiration):
         s = Serializer(current_app.config['SECRET_KEY'],
                        expires_in=expiration)
-        return s.dumps({'id':self.id})
+        return s.dumps({'id': self.id})
 
     @staticmethod
     def verify_auth_token(token):
@@ -287,6 +287,20 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     body_html = db.Column(db.Text)
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+
+    def to_json(self):
+        json_post = {
+            'url': url_for('api.get_post', id=self.id, _external=True),
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.timestamp,
+            'author': url_for('api.get_user', id=self.author_id,
+                              _external=True),
+            'comments': url_for('api.get_post_comments', id=self.id,
+                                _external=True),
+            'comment_count': self.comments.count()
+        }
+        return json_post
 
     @staticmethod
     def generate_fake(count=100):
